@@ -30,3 +30,7 @@ COPY build_install_pythons.sh /
 
 # Install Pythons 2.7 3.4 3.5 and matching pips
 RUN bash build_install_pythons.sh && rm build_install_pythons.sh
+
+# Run Python selection on way into image
+# Set 32-bit uname via `linux32`
+ENTRYPOINT ["linux32", "/usr/bin/choose_python.sh"]
