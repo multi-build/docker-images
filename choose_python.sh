@@ -1,7 +1,7 @@
 #!/bin/bash
 # Choose python from PYTHON_VERSION, UNICODE_WIDTH
-py_ver=${1:-$PYTHON_VERSION}
-uc_width=${2:-$UNICODE_WIDTH}
+py_ver=${1:-${PYTHON_VERSION:-3.5}}
+uc_width=${2:-${UNICODE_WIDTH:-32}}
 
 if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ]; then
     py_bin_dir=/opt/cp27m/bin
