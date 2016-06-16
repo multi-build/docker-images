@@ -1,18 +1,16 @@
 #!/bin/bash
 # Choose python from PYTHON_VERSION, UNICODE_WIDTH
-# Then execute whatever the user put on the command line
+# Then make a virtualenv from that Python and source it
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
 
 if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ]; then
-    py_bin_dir=/opt/cp27m/bin
-    pip_bin_dir=$py_bin_dir
+    py_bin=/opt/cp27m/bin/python$py_ver
 else
-    py_bin_dir=/usr/bin
-    pip_bin_dir=/usr/local/bin
+    py_bin=/usr/bin/python$py_ver
 fi
-ln -sf $py_bin_dir/python$py_ver /usr/bin/python
-ln -sf $pip_bin_dir/pip$py_ver /usr/local/bin/pip
+/root/.local/bin/virtualenv --python=$py_bin venv
+source venv/bin/activate
 
 # Carry on as before
 $@
