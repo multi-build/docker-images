@@ -13,6 +13,9 @@ for pyver in 3.4 3.5 2.7; do
     ${pybin} get-pip.py
 done
 
+# Get virtualenv for Python 3.5
+pip3.5 install --user virtualenv
+
 # Compile narrow unicode Python
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
     libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev"
