@@ -7,7 +7,7 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DB82666C
 apt-get update
 apt-get install -y wget
 wget https://bootstrap.pypa.io/get-pip.py
-for pyver in 3.4 3.5 2.7; do
+for pyver in 3.4 3.5 2.6 2.7 3.3 ; do
     pybin=python$pyver
     apt-get install -y ${pybin}-dev ${pybin}-tk
     ${pybin} get-pip.py
