@@ -6,7 +6,8 @@ Ubuntu trusty (14.04) docker images (32-bit) with Pythons:
 
 * 2.7;
 * 3.4;
-* 3.5
+* 3.5;
+* 3.6.
 
 installed via ``apt-get install python2.7-dev`` (etc).
 

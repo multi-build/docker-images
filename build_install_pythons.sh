@@ -16,21 +16,32 @@ done
 # Get virtualenv for Python 3.5
 pip3.5 install --user virtualenv
 
-# Compile narrow unicode Python
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
     libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev"
 apt-get -y install build-essential $BUILD_PKGS
-wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz
-tar zxf Python-2.7.11.tgz
-OUT_ROOT=/opt/cp27m
-mkdir $OUT_ROOT
-(cd Python-2.7.11 \
-    && ./configure --prefix=$OUT_ROOT --enable-unicode=ucs2 \
-    && make \
-    && make install)
 
+function compile_python {
+    local py_ver="$1"
+    local extra_args="$2"
+    wget https://www.python.org/ftp/python/${py_ver}/Python-${py_ver}.tgz
+    tar zxf Python-${py_ver}.tgz
+    local py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
+    local out_root=/opt/cp${py_nodot}m
+    mkdir $out_root
+    (cd Python-${py_ver} \
+        && ./configure --prefix=$out_root ${extra_args} \
+        && make \
+        && make install)
+    rm -rf "Python-${py_ver}" "Python-${py_ver}.tgz"
+}
+
+# Compile narrow unicode Python
+compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
-$OUT_ROOT/bin/python get-pip.py
+/opt/cp27m/bin/python get-pip.py
+
+# Compile Python 3.6
+compile_python 3.6.0
 
 # Clean out not-needed packages
 apt-get -y remove $BUILD_PKGS
