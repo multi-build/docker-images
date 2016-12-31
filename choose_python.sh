@@ -6,6 +6,8 @@ uc_width=${UNICODE_WIDTH:-32}
 
 if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ]; then
     py_bin=/opt/cp27m/bin/python$py_ver
+elif [ "$py_ver" == "3.6" ]; then
+    py_bin=/opt/cp36m/bin/python$py_ver
 else
     py_bin=/usr/bin/python$py_ver
 fi
