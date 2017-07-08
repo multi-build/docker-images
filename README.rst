@@ -19,4 +19,5 @@ the image of form ``socket: Operation not permitted`` even for ``ping``.  So,
 this image has to pushed up to dockerhup directly::
 
     docker build -t matthewbrett/trusty:32 .
+    docker login --username=matthewbrett
     docker push matthewbrett/trusty:32
