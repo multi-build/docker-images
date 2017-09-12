@@ -16,7 +16,7 @@ Pip installed for each Python via `get-pip.py
 
 Dockerhub won't build these images automatically because of network errors in
 the image of form ``socket: Operation not permitted`` even for ``ping``.  So,
-this image has to pushed up to dockerhup directly::
+this image has to be pushed up to dockerhub directly::
 
     docker build -t matthewbrett/trusty:32 .
     docker login --username=matthewbrett

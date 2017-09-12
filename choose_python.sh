@@ -11,6 +11,10 @@ else
 fi
 /root/.local/bin/virtualenv --python=$py_bin venv
 source venv/bin/activate
+if [ "$py_ver" == "2.6" ]; then
+    # Wheel 0.30 doesn't support Python 2.6
+    pip install "wheel<=0.29"
+fi
 
 # Carry on as before
 $@
