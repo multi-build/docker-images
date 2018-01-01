@@ -23,6 +23,11 @@ RUN echo '#!/bin/sh' > /usr/sbin/policy-rc.d \
 	\
 	&& echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /etc/apt/apt.conf.d/docker-gzip-indexes
 
+# Install manylinux1 libraries.
+# Thanks to @native-api for the report:
+# https://github.com/matthew-brett/multibuild/issues/106
+RUN apt-get install -y libice6 libsm6 libgl1-mesa-glx libglib2.0-0
+
 # Script to choose Python version
 COPY choose_python.sh /usr/bin/
 # Installer script for Pythons 2.7 3.4 3.5 3.6
