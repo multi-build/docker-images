@@ -26,10 +26,9 @@ pip3.5 install --user virtualenv
 
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
     libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev \
-    libffi-dev"
+    libffi-dev liblzma-dev uuid-dev"
 apt-get -y install build-essential $BUILD_PKGS
 
-# currently unused
 function compile_python {
     local py_ver="$1"
     local extra_args="$2"
@@ -50,8 +49,21 @@ compile_python 2.7.11 "--enable-unicode=ucs2"
 /opt/cp27m/bin/python get-pip.py
 
 # Compile Python 3.7.0, pip comes along with.
-# Python 3.7 from deadsnakes does not appear to have SSL
-compile_python 3.7.0
+# Python 3.7 from deadsnakes does not appear to have SSL.
+# Compilation needs SSL 1.0.2, not available for Trusty.
+function build_openssl {
+    local version=$1
+    local froot="openssl-${version}"
+    wget https://www.openssl.org/source/${froot}.tar.gz
+    tar xvf $froot.tar.gz
+    (cd $froot &&
+    ./config no-ssl2 no-shared -fPIC --prefix=/usr/local/ssl &&
+    make &&
+    make install)
+}
+
+build_openssl 1.0.2n
+compile_python 3.7.0 "--with-openssl=/usr/local/ssl"
 
 # Clean out not-needed packages
 apt-get -y remove $BUILD_PKGS
