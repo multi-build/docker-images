@@ -6,11 +6,19 @@ echo "deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main" > /etc/
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DB82666C
 apt-get update
 apt-get install -y wget
-wget https://bootstrap.pypa.io/get-pip.py
-for pyver in 3.4 3.5 3.6 2.6 2.7 3.3 ; do
+PIP_ROOT_URL="https://bootstrap.pypa.io"
+wget $PIP_ROOT_URL/get-pip.py
+for pyver in 3.4 3.5 3.6 2.7 2.6 3.3 ; do
     pybin=python$pyver
     apt-get install -y ${pybin}-dev ${pybin}-tk
-    ${pybin} get-pip.py
+    get_pip_fname="get-pip.py"
+    for badver in 2.6 3.3 ; do
+        if [ "$pyver" == "$badver" ]; then
+            get_pip_fname="get-pip-${pyver}.py"
+            wget $PIP_ROOT_URL/${pyver}/get-pip.py -O $get_pip_fname
+        fi
+    done
+    ${pybin} ${get_pip_fname}
 done
 
 # Get virtualenv for Python 3.5
