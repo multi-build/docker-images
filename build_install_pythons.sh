@@ -17,7 +17,8 @@ done
 pip3.5 install --user virtualenv
 
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
-    libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev"
+    libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev \
+    libffi-dev"
 apt-get -y install build-essential $BUILD_PKGS
 
 # currently unused
@@ -39,6 +40,9 @@ function compile_python {
 compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
 /opt/cp27m/bin/python get-pip.py
+
+# Compile Python 3.7.0, pip comes along with.
+compile_python 3.7.0
 
 # Clean out not-needed packages
 apt-get -y remove $BUILD_PKGS
