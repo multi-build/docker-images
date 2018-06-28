@@ -2,8 +2,8 @@
 # Install Pythons 2.7 3.4 3.5 3.6 and matching pips
 set -e
 
-echo "deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main" > /etc/apt/sources.list.d/deadsnakes.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DB82666C
+echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu trusty main" > /etc/apt/sources.list.d/deadsnakes.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776
 apt-get update
 apt-get install -y wget
 PIP_ROOT_URL="https://bootstrap.pypa.io"
@@ -50,6 +50,7 @@ compile_python 2.7.11 "--enable-unicode=ucs2"
 /opt/cp27m/bin/python get-pip.py
 
 # Compile Python 3.7.0, pip comes along with.
+# Python 3.7 from deadsnakes does not appear to have SSL
 compile_python 3.7.0
 
 # Clean out not-needed packages
