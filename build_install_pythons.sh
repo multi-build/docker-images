@@ -62,7 +62,7 @@ function build_openssl {
     make install)
 }
 
-build_openssl 1.0.2n
+build_openssl 1.0.2o
 compile_python 3.7.0 "--with-openssl=/usr/local/ssl"
 
 # Clean out not-needed packages
