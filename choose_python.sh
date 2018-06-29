@@ -4,8 +4,10 @@
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
 
-if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ]; then
-    py_bin=/opt/cp27m/bin/python$py_ver
+if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ] \
+    || [ "$py_ver" == "3.7" ]; then
+    py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
+    py_bin=/opt/cp${py_nodot}m/bin/python$py_ver
 else
     py_bin=/usr/bin/python$py_ver
 fi
