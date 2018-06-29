@@ -41,6 +41,8 @@ function compile_python {
         && ./configure --prefix=$out_root ${extra_args} \
         && make \
         && make install)
+    # Remove stray files
+    rm -rf Python-${py_ver}
 }
 
 # Compile narrow unicode Python
@@ -71,4 +73,4 @@ apt-get -y autoremove
 apt-get clean
 
 # Remove stray files
-rm -rf Python-2.7* get-pip.py
+rm -f get-pip.py
