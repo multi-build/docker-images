@@ -32,8 +32,10 @@ apt-get -y install build-essential $BUILD_PKGS
 function compile_python {
     local py_ver="$1"
     local extra_args="$2"
-    wget https://www.python.org/ftp/python/${py_ver}/Python-${py_ver}.tgz
-    tar zxf Python-${py_ver}.tgz
+    local froot="Python-${py_ver}"
+    local ftgz="${froot}.tgz"
+    wget https://www.python.org/ftp/python/${py_ver}/${ftgz}
+    tar zxf ${ftgz}
     local py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
     local out_root=/opt/cp${py_nodot}m
     mkdir $out_root
@@ -42,7 +44,7 @@ function compile_python {
         && make \
         && make install)
     # Remove stray files
-    rm -rf Python-${py_ver}
+    rm -rf ${froot} ${ftgz}
 }
 
 # Compile narrow unicode Python
@@ -57,12 +59,14 @@ compile_python 2.7.11 "--enable-unicode=ucs2"
 function build_openssl {
     local version=$1
     local froot="openssl-${version}"
-    wget https://www.openssl.org/source/${froot}.tar.gz
-    tar xvf $froot.tar.gz
+    local ftgz="${froot}.tar.gz"
+    wget https://www.openssl.org/source/${ftgz}
+    tar xvf ${ftgz}
     (cd $froot &&
     ./config no-ssl2 no-shared -fPIC --prefix=/usr/local/ssl &&
     make &&
     make install)
+    rm -rf ${froot} ${ftgz}
 }
 
 build_openssl 1.0.2o
@@ -75,4 +79,4 @@ apt-get -y autoremove
 apt-get clean
 
 # Remove stray files
-rm -f get-pip.py
+rm -f get-pip*.py
