@@ -46,6 +46,7 @@ function compile_python {
 }
 
 # Compile narrow unicode Python
+# Compiled Pythons need to be flagged in the choose_python.sh script.
 compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
 /opt/cp27m/bin/python get-pip.py
@@ -65,6 +66,7 @@ function build_openssl {
 }
 
 build_openssl 1.0.2o
+# Compiled Pythons need to be flagged in the choose_python.sh script.
 compile_python 3.7.0 "--with-openssl=/usr/local/ssl"
 
 # Clean out not-needed packages
