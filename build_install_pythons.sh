@@ -72,6 +72,22 @@ build_openssl 1.0.2o
 # Compiled Pythons need to be flagged in the choose_python.sh script.
 compile_python 3.7.0 "--with-openssl=/usr/local/ssl"
 
+# Install certificates from certifi, for Python 3.7
+# Thanks to Github user Mr BitBucket for this fix.
+# Make virtuelenv for certifi install.
+/root/.local/bin/virtualenv --python=/opt/cp37m/bin/python3 venv
+. venv/bin/activate
+# Install certifi and copy .pem file to system locaation.
+pip install certifi
+CERTIFI_CERT=$(python -c "import certifi; print(certifi.where())")
+DEFAULT_CERT=$(python -c"import ssl; print(ssl.get_default_verify_paths().openssl_cafile)")
+echo "CERTIFI_CERT=$CERTIFI_CERT"
+echo "DEFAULT_CERT=$DEFAULT_CERT"
+cp ${CERTIFI_CERT} ${DEFAULT_CERT}
+deactivate
+# Remove virtualenv files from image
+rm -rf venv
+
 # Clean out not-needed packages
 apt-get -y remove $BUILD_PKGS
 apt-get -y autoremove
