@@ -4,13 +4,13 @@
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
 
+py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
 if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ] \
-    || [ $(lex_ver ${py_ver}) -ge $(lex_ver 3.7) ]; then
-    py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
+    || [ ${py_nodot} -ge "37" ]; then
     abi_suff=m
     # Python 3.8 and up no longer uses the PYMALLOC 'm' suffix
     # https://github.com/pypa/wheel/pull/303
-    if [ $(lex_ver ${py_ver}) -ge $(lex_ver 3.8) ]; then
+    if [ ${py_nodot} -ge "38" ]; then
         abi_suff=""
     fi
     py_bin=/opt/cp${py_nodot}${abi_suff}/bin/python${py_ver}
