@@ -1,6 +1,6 @@
 #!/bin/bash
-# Install Pythons 2.7 3.4 3.5 3.6 and matching pips
-set -e
+# Install Pythons 2.7 3.4 3.5 3.6 3.7 3.8rc1 and matching pips
+set -ex
 
 echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu trusty main" > /etc/apt/sources.list.d/deadsnakes.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776
@@ -34,10 +34,18 @@ function compile_python {
     local extra_args="$2"
     local froot="Python-${py_ver}"
     local ftgz="${froot}.tgz"
-    wget https://www.python.org/ftp/python/${py_ver}/${ftgz}
+    # Drop any suffix from three-digit version number
+    local py_nums=$(echo $py_ver |  awk -F "." '{printf "%d.%d.%d", $1, $2, $3}')
+    wget https://www.python.org/ftp/python/${py_nums}/${ftgz}
     tar zxf ${ftgz}
     local py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
-    local out_root=/opt/cp${py_nodot}m
+    local abi_suff=m
+    # Python 3.8 and up no longer uses the PYMALLOC 'm' suffix
+    # https://github.com/pypa/wheel/pull/303
+    if [ ${py_nodot} -ge "38" ]; then
+        abi_suff=""
+    fi
+    local out_root=/opt/cp${py_nodot}${abi_suff}
     mkdir $out_root
     (cd Python-${py_ver} \
         && ./configure --prefix=$out_root ${extra_args} \
@@ -71,6 +79,7 @@ function build_openssl {
 build_openssl 1.0.2o
 # Compiled Pythons need to be flagged in the choose_python.sh script.
 compile_python 3.7.0 "--with-openssl=/usr/local/ssl"
+compile_python 3.8.0rc1 "--with-openssl=/usr/local/ssl"
 
 # Install certificates from certifi, for Python 3.7
 # Thanks to Github user Mr BitBucket for this fix.

@@ -7,12 +7,16 @@ Ubuntu trusty (14.04) docker images (32-bit) with Pythons:
 * 2.7;
 * 3.4;
 * 3.5;
-* 3.6.
+* 3.6;
+* 3.7;
+* 3.8.0rc1
 
 installed via ``apt-get install python2.7-dev`` (etc).
 
 Pip installed for each Python via `get-pip.py
 <https://bootstrap.pypa.io/get-pip.py>`_.
+
+Pythons 3.7, 3.8rc1 are installed from source. They include pip and setuptools.
 
 Dockerhub won't build these images automatically because of network errors in
 the image of form ``socket: Operation not permitted`` even for ``ping``.  So,
