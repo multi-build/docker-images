@@ -34,7 +34,9 @@ function compile_python {
     local extra_args="$2"
     local froot="Python-${py_ver}"
     local ftgz="${froot}.tgz"
-    wget https://www.python.org/ftp/python/${py_ver}/${ftgz}
+    # Drop any suffix from three-digit version number
+    local py_nums=$(echo $py_ver |  awk -F "." '{printf "%d.%d.%d", $1, $2, $3}')
+    wget https://www.python.org/ftp/python/${py_nums}/${ftgz}
     tar zxf ${ftgz}
     local py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
     local abi_suff=m
