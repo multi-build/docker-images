@@ -17,6 +17,9 @@ if [ "$py_ver" == "2.7" ] && [ "$uc_width" == "16" ] \
 else
     py_bin=/usr/bin/python${py_ver}
 fi
+if [ ! -e ${py_bin} ]; then
+    exit 1
+fi
 /root/.local/bin/virtualenv --python=$py_bin venv
 source venv/bin/activate
 if [ "$py_ver" == "2.6" ]; then
