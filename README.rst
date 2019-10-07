@@ -25,3 +25,11 @@ this image has to be pushed up to dockerhub directly::
     docker build -t matthewbrett/trusty:32 .
     docker login --username=matthewbrett
     docker push matthewbrett/trusty:32
+
+If you get a "User interaction is not allowed." error at the ``login`` stage,
+you may get further by running this command at the affected terminal::
+
+   security unlock-keychain
+
+See
+https://github.com/docker/docker-credential-helpers/issues/82#issuecomment-367258282
