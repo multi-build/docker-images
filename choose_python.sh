@@ -1,6 +1,8 @@
 #!/bin/bash
 # Choose python from PYTHON_VERSION, UNICODE_WIDTH
 # Then make a virtualenv from that Python and source it
+set -x
+
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
 

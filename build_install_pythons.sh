@@ -21,9 +21,6 @@ for pyver in 3.5 3.6 3.7 3.8 ; do
     ${pybin} ${get_pip_fname}
 done
 
-# Get virtualenv
-pip3.5 install --user virtualenv
-
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
     libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev \
     libffi-dev liblzma-dev uuid-dev"

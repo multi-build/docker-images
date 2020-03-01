@@ -13,7 +13,7 @@ matrix:
    - arch: amd64
      env: PLATFORM="i686"
    - arch: arm64
-     env: PLATFORM="aarch64"
+     env: PLATFORM="arm64v8"
    - arch: ppc64le
      env: PLATFORM="ppc64le"
    - arch: s390x
