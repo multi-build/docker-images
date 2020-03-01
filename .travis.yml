@@ -22,4 +22,8 @@ matrix:
 script:
   - PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
 
-
+deploy:
+  provider: script
+  script: deploy.sh
+  on:
+    branch: xenial
