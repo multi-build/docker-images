@@ -45,7 +45,20 @@ function compile_python {
     rm -rf ${froot} ${ftgz}
 }
 
-if [ "$PLAT" -eq "x86_64" ]; then
+function build_openssl {
+    local version=$1
+    local froot="openssl-${version}"
+    local ftgz="${froot}.tar.gz"
+    wget https://www.openssl.org/source/${ftgz}
+    tar xvf ${ftgz}
+    (cd $froot &&
+    ./config no-ssl2 no-shared -fPIC --prefix=/usr/local/ssl &&
+    make &&
+    make install)
+    rm -rf ${froot} ${ftgz}
+}
+
+if [ "$PLATFORM" -eq "x86_64" ]; then
     for pyver in 3.7 3.8 ; do
         pybin=python$pyver
         apt-get install -y ${pybin} ${pybin}-dev ${pybin}-venv
@@ -66,20 +79,6 @@ compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
 /opt/cp27m/bin/python get-pip.py
 
-function build_openssl {
-    local version=$1
-    local froot="openssl-${version}"
-    local ftgz="${froot}.tar.gz"
-    wget https://www.openssl.org/source/${ftgz}
-    tar xvf ${ftgz}
-    (cd $froot &&
-    ./config no-ssl2 no-shared -fPIC --prefix=/usr/local/ssl &&
-    make &&
-    make install)
-    rm -rf ${froot} ${ftgz}
-}
-
-#build_openssl 1.0.2o
 # Compiled Pythons need to be flagged in the choose_python.sh script.
 #compile_python 3.8.0rc1 "--with-openssl=/usr/local/ssl"
 
