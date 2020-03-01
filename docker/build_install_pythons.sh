@@ -58,7 +58,7 @@ function build_openssl {
     rm -rf ${froot} ${ftgz}
 }
 
-if [ "$PLATFORM" -eq "x86_64" ]; then
+if [ "$PLATFORM" = "x86_64" ]; then
     for pyver in 3.7 3.8 ; do
         pybin=python$pyver
         apt-get install -y ${pybin} ${pybin}-dev ${pybin}-venv
@@ -67,7 +67,7 @@ if [ "$PLATFORM" -eq "x86_64" ]; then
     done
 else
     build_openssl 1.0.2o
-    for pyver in 3.7 3.8 ; do
+    for pyver in 3.7.6 3.8.2 ; do
         compile_python $pyver "--with-openssl=/usr/local/ssl"
     done
 fi
