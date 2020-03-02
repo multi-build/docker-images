@@ -20,7 +20,7 @@ matrix:
      env: PLATFORM="s390x"
 
 script:
-  - echo $PLATFORM; echo `dpkg --architecture`
+  - echo $PLATFORM; echo `dpkg --print-architecture`
 
 #deploy:
 #  skip_cleanup: true
