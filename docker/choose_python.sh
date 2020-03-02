@@ -1,8 +1,8 @@
 #!/bin/bash
 # Choose python from PYTHON_VERSION, UNICODE_WIDTH
 # Then make a virtualenv from that Python and source it
+
 set -x
-export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
@@ -29,17 +29,20 @@ else
             abi_suff=""
         fi
         opt_bin=/opt/cp${py_nodot}${abi_suff}/bin/python${py_ver}
+        if [ ! -e ${opt_bin} ]; then
+            echo neither "$py_bin" nor "$opt_bin" found
+            exit 1
+        fi
+        py_bin=$opt_bin
     fi
-    if [ ! -e ${opt_bin} ]; then
-        echo neither "$py_bin" nor "$opt_bin" found
-        exit 1
-    fi
-    py_bin=$opt_bin
 fi
 if [ ! -e ${py_bin} ]; then
     echo something wrong, "$py_bin" not found
     exit 1
 fi
+
+# the next step is too verbose with -x
+set +x
 
 /root/.local/bin/virtualenv --python=$py_bin venv
 source venv/bin/activate
