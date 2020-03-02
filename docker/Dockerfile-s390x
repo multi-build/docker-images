@@ -21,6 +21,5 @@ RUN apt-get update && \
 RUN pip3.6 install --user virtualenv
 
 # Run Python selection on way into image
-# Set 32-bit uname via `linux32`
 COPY choose_python.sh /usr/bin/
-ENTRYPOINT ["linux32", "/usr/bin/choose_python.sh"]
+ENTRYPOINT ["/usr/bin/choose_python.sh"]

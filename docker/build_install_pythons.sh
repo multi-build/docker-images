@@ -8,9 +8,15 @@ apt-get update
 apt-get install -y wget
 PIP_ROOT_URL="https://bootstrap.pypa.io"
 wget $PIP_ROOT_URL/get-pip.py
-for pyver in 2.7 3.5 3.6; do
+for pyver in 2.7 3.5 3.6 3.7; do
     pybin=python$pyver
     apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk
+    get_pip_fname="get-pip.py"
+    ${pybin} ${get_pip_fname}
+done
+for pyver in 3.8 3.9; do
+    pybin=python$pyver
+    apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk ${pybin}-distutils
     get_pip_fname="get-pip.py"
     ${pybin} ${get_pip_fname}
 done
@@ -58,14 +64,8 @@ function build_openssl {
     rm -rf ${froot} ${ftgz}
 }
 
-if [ "$PLATFORM" = "x86_64" ]; then
-    for pyver in 3.7 3.8 ; do
-        pybin=python$pyver
-        apt-get install -y ${pybin} ${pybin}-dev ${pybin}-venv
-        get_pip_fname="get-pip.py"
-        ${pybin} ${get_pip_fname}
-    done
-else
+if [ 0 -eq 1 ]; then
+    # demo code to build a python version, not needed.
     build_openssl 1.0.2o
     for pyver in 3.7.6 3.8.2 ; do
         compile_python $pyver "--with-openssl=/usr/local/ssl"
