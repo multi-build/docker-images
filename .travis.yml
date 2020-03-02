@@ -20,11 +20,11 @@ matrix:
      env: PLATFORM="s390x"
 
 script:
-  - PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
+  - echo $PLATFORM; echo `dpkg --architecture`
 
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: bash ./deploy.sh
-  on:
-    branch: xenial
+#deploy:
+#  skip_cleanup: true
+#  provider: script
+#  script: bash ./deploy.sh
+#  on:
+#    branch: xenial
