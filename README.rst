@@ -18,3 +18,5 @@ Pip installed for each Python via `get-pip.py
 
 Pythons include pip and setuptools.
 
+Use them via (for x86_64) `docker pull multibuild/xenial_x86_64; docker run -it multibuild/xenial_x86_64 /bin/bash`
+
