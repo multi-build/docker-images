@@ -22,8 +22,8 @@ for pyver in 3.8 3.9; do
 done
 BUILD_PKGS="zlib1g-dev libbz2-dev libncurses5-dev libreadline-gplv2-dev \
     libsqlite3-dev libssl-dev libgdbm-dev tcl-dev tk-dev \
-    libffi-dev liblzma-dev uuid-dev"
-apt-get -y install build-essential $BUILD_PKGS
+    liblzma-dev uuid-dev"
+apt-get -y install build-essential $BUILD_PKGS libffi-dev
 
 function compile_python {
     local py_ver="$1"

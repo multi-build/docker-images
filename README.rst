@@ -18,5 +18,10 @@ Pip installed for each Python via `get-pip.py
 
 Pythons include pip and setuptools.
 
+Extra development libraries left in the installation:
+
+- multibuild libraries
+- libffi-dev (needed for cffi)
+
 Use them via (for x86_64) ``docker pull multibuild/xenial_x86_64; docker run -it multibuild/xenial_x86_64 /bin/bash``
 
