@@ -4,7 +4,7 @@
 
 py_ver=${PYTHON_VERSION:-3.5}
 uc_width=${UNICODE_WIDTH:-32}
-PYPY_URL=https://bitbucket.org/pypy/pypy/downloads
+PYPY_URL=https://downloads.python.org/pypy
 DOWNLOADS_SDIR=downloads
 
 function install_pypy {
