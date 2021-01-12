@@ -16,45 +16,38 @@ function install_pypy {
     # sets $PYTHON_EXE variable to python executable
 
     local version=$1
-    suffix=linux64
     case "$PLAT" in
-    "x86_64")  suffix="linux64";;
+    "x86_64")  if [ -n "$IS_MACOS" ]; then
+                   suffix="osx64";
+               else
+                   suffix="linux64";
+               fi;;
     "i686")    suffix="linux32";;
-    "darwin")  suffix="osx64";;
     "ppc64le") suffix="ppc64le";;
-    "s30x")    suffix="s390x";;
+    "s390x")    suffix="s390x";;
     "aarch64")  suffix="aarch64";;
-    *) if [ -n "$IS_OSX" ]; then
-            suffix="osx64";
-       else
-            echo unknown platform "$PLAT"; exit 1
-       fi;;
+    *) echo unknown platform "$PLAT"; exit 1;;
     esac
 
-    # Need to convert pypy2.7-v7.2 to py_version=pypy2.7, pypy_ver=v7.2.0
-    local py_version=$(echo $version |cut -f1 -d'-')
-    local pypy_ver=$(echo $version |cut -f2 -d'-')
-    if [ "${pypy_ver:0:1}" == "v" ]; then
-        IFS='.' read -r -a array <<< "${pypy_ver:1}"
-    else
-        IFS='.' read -r -a array <<< "${pypy_ver}"
-    fi
-    major="${array[0]}"
-    minor="${array[1]-0}"
-    patch="${array[2]-0}"
-    local py_build=$py_version-v$major.$minor.$patch-$suffix
+    # Need to convert pypy-7.2 to pypy2.7-v7.2.0 and pypy3.6-7.3 to pypy3.6-v7.3.0
+    local prefix=$(get_pypy_build_prefix $version)
+    # since prefix is pypy3.6v7.2 or pypy2.7v7.2, grab the 4th (0-index) letter
+    local major=${prefix:4:1}
+    # get the pypy version 7.2.0
+    local py_version=$(fill_pypy_ver $(echo $version | cut -f2 -d-))
+
+    local py_build=$prefix$py_version-$suffix
     local py_zip=$py_build.tar.bz2
     local zip_path=$DOWNLOADS_SDIR/$py_zip
     mkdir -p $DOWNLOADS_SDIR
     wget -nv $PYPY_URL/${py_zip} -P $DOWNLOADS_SDIR
-    tar -jxf $zip_path
+    untar $zip_path
     # bug/feature: pypy package for pypy3 only has bin/pypy3 :(
-    if [ "${py_version:4:1}" == "3" ] && [ ! -x "$py_build/bin/pypy" ]; then
+    if [ "$major" == "3" ] && [ ! -x "$py_build/bin/pypy" ]; then
         ln $py_build/bin/pypy3 $py_build/bin/pypy
     fi
     PYTHON_EXE=$(realpath $py_build/bin/pypy)
     $PYTHON_EXE -mensurepip
-    PATH=$py_build/bin:$PATH
     $PYTHON_EXE -mpip install --upgrade pip setuptools wheel
     if [ "$major" == "3" ] && [ ! -x "$py_build/bin/pip" ]; then
         ln $py_build/bin/pip3 $py_build/bin/pip
