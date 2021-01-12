@@ -10,6 +10,7 @@ Ubuntu xenial (16.04) docker images (64-bit) with Pythons:
 * 3.6
 * 3.7
 * 3.8
+* 3.9
 
 installed via ``apt-get install python2.7-dev`` (etc).
 
