@@ -7,8 +7,15 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776
 apt-get update
 apt-get install -y wget
 PIP_ROOT_URL="https://bootstrap.pypa.io"
+for pyver in 2.7 3.5; do
+    pybin=python$pyver
+    apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk
+    wget $PIP_ROOT_URL/$pyver/get-pip.py -O get-pip-$pyver.py
+    get_pip_fname="get-pip-${pyver}.py"
+    ${pybin} ${get_pip_fname}
+done
 wget $PIP_ROOT_URL/get-pip.py
-for pyver in 2.7 3.5 3.6 3.7; do
+for pyver in 3.6 3.7; do
     pybin=python$pyver
     apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk
     get_pip_fname="get-pip.py"
@@ -77,7 +84,7 @@ fi
 # Compiled Pythons need to be flagged in the choose_python.sh script.
 compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
-/opt/cp27m/bin/python get-pip.py
+/opt/cp27m/bin/python get-pip-2.7.py
 
 # Compiled Pythons need to be flagged in the choose_python.sh script.
 #compile_python 3.8.0rc1 "--with-openssl=/usr/local/ssl"
