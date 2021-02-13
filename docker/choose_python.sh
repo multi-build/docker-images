@@ -17,17 +17,16 @@ function install_pypy {
 
     local version=$1
     case "$PLAT" in
-    "x86_64")  suffix="linux64";;
+    "x86_64")  if [ -n "$IS_OSX" ]; then
+                   suffix="osx64";
+               else
+                   suffix="linux64";
+               fi;;
     "i686")    suffix="linux32";;
-    "darwin")  suffix="osx64";;
     "ppc64le") suffix="ppc64le";;
     "s390x")    suffix="s390x";;
     "aarch64")  suffix="aarch64";;
-    *) if [ -n "$IS_OSX" ]; then
-            suffix="osx64";
-       else
-            echo unknown platform "$PLAT"; exit 1
-       fi;;
+    *) echo unknown platform "$PLAT"; exit 1;;
     esac
 
     # Need to convert pypy2.7-v7.2 to py_version=pypy2.7, pypy_ver=v7.2.0
