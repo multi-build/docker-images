@@ -10,7 +10,7 @@ PIP_ROOT_URL="https://bootstrap.pypa.io"
 for pyver in 2.7 3.5; do
     pybin=python$pyver
     apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk
-    wget $PIP_ROOT_URL/$pyver/get-pip.py -O get-pip-$pyver.py
+    wget $PIP_ROOT_URL/pip/$pyver/get-pip.py -O get-pip-$pyver.py
     get_pip_fname="get-pip-${pyver}.py"
     ${pybin} ${get_pip_fname}
 done
