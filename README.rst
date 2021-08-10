@@ -10,6 +10,7 @@ Ubuntu xenial (16.04) docker images (64-bit) with Pythons:
 * 3.7
 * 3.8
 * 3.9
+* 3.10
 
 installed via ``apt-get install python2.7-dev`` (etc).
 
@@ -23,5 +24,5 @@ Extra development libraries left in the installation:
 - multibuild libraries
 - libffi-dev (needed for cffi)
 
-Use them via (for x86_64) ``docker pull multibuild/xenial_x86_64; docker run -it multibuild/xenial_x86_64 /bin/bash``
+Use them via (for x86_64) ``docker run -it multibuild/xenial_x86_64 /bin/bash``
 
