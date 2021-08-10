@@ -2,8 +2,7 @@
 # Choose python from PYTHON_VERSION, UNICODE_WIDTH
 # Then make a virtualenv from that Python and source it
 
-py_ver=${PYTHON_VERSION:-3.5}
-uc_width=${UNICODE_WIDTH:-32}
+py_ver=${PYTHON_VERSION:-3.8}
 PYPY_URL=https://downloads.python.org/pypy
 DOWNLOADS_SDIR=downloads
 

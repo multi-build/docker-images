@@ -10,8 +10,6 @@ matrix:
   include:
    - arch: amd64
      env: PLATFORM="x86_64"
-   - arch: amd64
-     env: PLATFORM="i686"
    - arch: arm64
      env: PLATFORM="arm64v8"
    - arch: ppc64le

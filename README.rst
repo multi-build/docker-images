@@ -5,7 +5,6 @@ Ubuntu focal 64-bit images with Pythons installed
 Ubuntu focal (20.04) docker images (64-bit) with Pythons:
 
 * 2.7
-* 3.5
 * 3.6
 * 3.7
 * 3.8
