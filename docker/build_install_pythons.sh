@@ -2,7 +2,7 @@
 # Install Pythons 2.7 3.5 3.6 3.7 3.8 3.9 3.10 and matching pips
 set -ex
 
-echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu xenial main" > /etc/apt/sources.list.d/deadsnakes.list
+echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu focal main" > /etc/apt/sources.list.d/deadsnakes.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776
 apt-get update
 apt-get install -y wget

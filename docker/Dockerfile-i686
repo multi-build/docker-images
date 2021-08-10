@@ -1,4 +1,4 @@
-FROM i386/ubuntu:xenial
+FROM i386/ubuntu:focal
 
 ARG PLATFORM=i686
 RUN apt update

@@ -1,4 +1,4 @@
-FROM ppc64le/ubuntu:xenial
+FROM ppc64le/ubuntu:focal
 
 ARG PLATFORM=ppc64le
 RUN apt update

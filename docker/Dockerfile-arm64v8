@@ -1,4 +1,4 @@
-FROM arm64v8/ubuntu:xenial
+FROM arm64v8/ubuntu:focal
 
 ARG PLATFORM=arm64v8
 RUN apt update
