@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install Pythons 2.7 3.5 3.6 3.7 3.8 3.9 and matching pips
+# Install Pythons 2.7 3.5 3.6 3.7 3.8 3.9 3.10 and matching pips
 set -ex
 
 echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu xenial main" > /etc/apt/sources.list.d/deadsnakes.list
@@ -21,7 +21,7 @@ for pyver in 3.6 3.7; do
     get_pip_fname="get-pip.py"
     ${pybin} ${get_pip_fname}
 done
-for pyver in 3.8 3.9; do
+for pyver in 3.8 3.9 3.10; do
     pybin=python$pyver
     apt-get install -y ${pybin} ${pybin}-dev ${pybin}-tk ${pybin}-distutils
     get_pip_fname="get-pip.py"
@@ -85,9 +85,6 @@ fi
 compile_python 2.7.11 "--enable-unicode=ucs2"
 # Get pip for narrow unicode Python
 /opt/cp27m/bin/python get-pip-2.7.py
-
-# Compiled Pythons need to be flagged in the choose_python.sh script.
-#compile_python 3.8.0rc1 "--with-openssl=/usr/local/ssl"
 
 # Clean out not-needed packages
 apt-get -y remove $BUILD_PKGS
