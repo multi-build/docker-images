@@ -64,8 +64,9 @@ function install_pypy {
 if [ "${py_ver:0:4}" == "pypy" ]; then
     # Must be pre-installed, py_ver should be pypy3.6-7.3 or pypy2.7-7.3
     if [ -z "$PLAT" ]; then
-        # Use any Python that comes to hand.
-        PLAT="$(python -c 'import platform; print(platform.uname()[-1])')"
+        # Use any Python that comes to hand (python, or python3).
+        NATIVE_PYTHON=$(which python 2> /dev/null || which python3)
+        PLAT="$(NATIVE_PYTHON -c 'import platform; print(platform.uname()[-1])')"
     fi
     install_pypy $py_ver
     py_bin=$PYTHON_EXE
