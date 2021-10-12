@@ -1,0 +1,118 @@
+# based on https://github.com/docker-library/python/blob/8d48af512dc58e9c29c9d4ee59477c195a29cbdc/3.10/alpine3.13/Dockerfile
+
+FROM alpine:latest
+
+ENV PYTHON_VERSIONS="3.8.9 3.9.7 3.10.0"
+
+# http://bugs.python.org/issue19846
+# > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
+ENV LANG C.UTF-8
+
+# runtime dependencies
+RUN set -eux; \
+    apk add --no-cache \
+      # install ca-certificates so that HTTPS works consistently
+      ca-certificates \
+      # and tzdata for PEP 615 (https://www.python.org/dev/peps/pep-0615/)
+      tzdata \
+      bash \
+      rsync \
+      cmake \
+      zlib-dev \
+    \
+    && apk add --no-cache --virtual .fetch-deps \
+       gnupg \
+       tar \
+       xz \
+    \
+    && apk add --no-cache --virtual .build-deps \
+       bluez-dev \
+       bzip2-dev \
+       coreutils \
+       dpkg-dev dpkg \
+       expat-dev \
+       findutils \
+       gcc \
+       gdbm-dev \
+       libc-dev \
+       libffi-dev \
+       libnsl-dev \
+       libtirpc-dev \
+       linux-headers \
+       make \
+       ncurses-dev \
+       openssl-dev \
+       pax-utils \
+       readline-dev \
+       sqlite-dev \
+       tcl-dev \
+       tk \
+       tk-dev \
+       util-linux-dev \
+       xz-dev \
+       \
+    \
+    && for PYTHON_VERSION in $PYTHON_VERSIONS; do \
+       wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+       && mkdir -p /usr/src/python \
+       && tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
+       && rm python.tar.xz \
+       && ( \
+         cd /usr/src/python \
+         && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+         && ./configure \
+            --build="$gnuArch" \
+            --enable-loadable-sqlite-extensions \
+            --enable-optimizations \
+            --enable-option-checking=fatal \
+            --enable-shared \
+            --with-system-expat \
+            --with-system-ffi \
+            --without-ensurepip \
+         && make -j "$(nproc)" \
+            # set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
+            # https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0
+                   EXTRA_CFLAGS="-DTHREAD_STACK_SIZE=0x100000" \
+                   LDFLAGS="-Wl,--strip-all" \
+         && make install \
+         ) \
+       && rm -rf /usr/src/python ; \
+    done \
+    \
+    && find /usr/local -depth \
+            \( \
+                    \( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+                    -o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name '*.a' \) \) \
+            \) -exec rm -rf '{}' + \
+    \
+    && find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec scanelf --needed --nobanner --format '%n#p' '{}' ';' \
+       | tr ',' '\n' \
+       | sort -u \
+       | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+       | xargs -rt apk add --no-cache --virtual .python-rundeps \
+    \
+    && apk del --no-network .fetch-deps \
+    && apk del --no-network .build-deps
+
+ENV PIP_ROOT_URL="https://bootstrap.pypa.io"
+
+RUN set -ex; \
+    wget -O get-pip.py https://bootstrap.pypa.io/pip/get-pip.py \
+    && \
+    for PYTHON_VERSION in $PYTHON_VERSIONS; do \
+      \
+      MAJOR_VERSION=$(python3 -c "print(\"$PYTHON_VERSION\".rsplit(\".\", 1)[0])") \
+      \
+      && python$MAJOR_VERSION get-pip.py \
+         pip ; \
+    done \
+    && find /usr/local -depth \
+       \( \
+         \( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+         -o \
+         \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+       \) -exec rm -rf '{}' + \
+    && rm -f get-pip.py \
+    && rm -rf ~/.cache
+
+CMD ["/bin/bash"]
