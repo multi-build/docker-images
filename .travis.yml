@@ -17,6 +17,8 @@ matrix:
      env: PLATFORM="ppc64le"
    - arch: s390x
      env: PLATFORM="s390x"
+   - arch: Alpine
+     env: PLATFORM="alpine"
 
 script:
   - PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
