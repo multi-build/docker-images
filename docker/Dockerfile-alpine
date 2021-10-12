@@ -95,17 +95,12 @@ RUN set -eux; \
     && apk del --no-network .fetch-deps \
     && apk del --no-network .build-deps
 
-ENV PIP_ROOT_URL="https://bootstrap.pypa.io"
-
 RUN set -ex; \
-    wget -O get-pip.py https://bootstrap.pypa.io/pip/get-pip.py \
-    && \
     for PYTHON_VERSION in $PYTHON_VERSIONS; do \
       \
       MAJOR_VERSION=$(python3 -c "print(\"$PYTHON_VERSION\".rsplit(\".\", 1)[0])") \
       \
-      && python$MAJOR_VERSION get-pip.py \
-         pip ; \
+      && python$MAJOR_VERSION -m ensurepip --upgrade ; \
     done \
     && find /usr -depth \
        \( \
@@ -113,7 +108,6 @@ RUN set -ex; \
          -o \
          \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
        \) -exec rm -rf '{}' + \
-    && rm -f get-pip.py \
     && rm -rf ~/.cache \
     \
     && ln -s /usr/bin/python3 /usr/bin/python \
