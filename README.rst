@@ -13,7 +13,7 @@ Ubuntu focal (20.04) docker images (64-bit) with Pythons:
 
 installed via ``apt-get install python2.7-dev`` (etc).
 
-Pip installed for each Python via `get-pip.py
+Pip installed for each Python via ensurepip (for python3) or `get-pip.py
 <https://bootstrap.pypa.io/get-pip.py>`_.
 
 Pythons include pip and setuptools.
@@ -25,3 +25,4 @@ Extra development libraries left in the installation:
 
 Use them via (for x86_64) ``docker run -it multibuild/focal_x86_64 /bin/bash``
 
+The images live under https://hub.docker.com/u/multibuild
