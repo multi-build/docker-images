@@ -10,18 +10,18 @@ cache:
 matrix:
   include:
    - arch: amd64
-     env: PLATFORM="x86_64"
+     env: DIST="focal" PLATFORM="x86_64"
    - arch: arm64
-     env: PLATFORM="arm64v8"
+     env: DIST="focal" PLATFORM="arm64v8"
    - arch: ppc64le
-     env: PLATFORM="ppc64le"
+     env: DIST="focal" PLATFORM="ppc64le"
    - arch: s390x
-     env: PLATFORM="s390x"
-   - arch: Alpine
-     env: PLATFORM="alpine"
+     env: DIST="focal" PLATFORM="s390x"
+   - arch: amd64
+     env: DIST="Alpine3.14" PLATFORM="x86_64"
 
 script:
-  - PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
+  - DIST=$DIST PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
 
 deploy:
   skip_cleanup: true
