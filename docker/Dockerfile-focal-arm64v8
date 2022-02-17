@@ -19,7 +19,7 @@ RUN apt-get update && \
         libffi-dev
 
 # Get virtualenv
-RUN pip3.6 install --user virtualenv
+RUN pip3.10 install --user virtualenv
 
 # Run Python selection on way into image
 COPY choose_python.sh /usr/bin/
