@@ -78,19 +78,25 @@ if [ "${py_ver:0:4}" == "pypy" ]; then
 else
     py_bin=/usr/bin/python${py_ver}
     if [ ! -e ${py_bin} ]; then
-        py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
-        abi_suff=m
-        # Python 3.8 and up no longer uses the PYMALLOC 'm' suffix
-        # https://github.com/pypa/wheel/pull/303
-        if [ ${py_nodot} -ge "38" ]; then
-            abi_suff=""
+        local_bin=/usr/local/bin/python${py_ver}
+        if [ -e ${local_bin} ]; then
+            py_bin=$local_bin
+        else
+            py_nodot=$(echo ${py_ver} | awk -F "." '{ print $1$2 }')
+            abi_suff=m
+            # Python 3.8 and up no longer uses the PYMALLOC 'm' suffix
+            # https://github.com/pypa/wheel/pull/303
+            if [ ${py_nodot} -ge "38" ]; then
+                abi_suff=""
+            fi
+            opt_bin=/opt/cp${py_nodot}${abi_suff}/bin/python${py_ver}
+            if [ -e ${opt_bin} ]; then
+                py_bin=$opt_bin
+            else
+                echo neither "$py_bin", "$local_bin" nor "$opt_bin" found
+                exit 1
+            fi
         fi
-        opt_bin=/opt/cp${py_nodot}${abi_suff}/bin/python${py_ver}
-        if [ ! -e ${opt_bin} ]; then
-            echo neither "$py_bin" nor "$opt_bin" found
-            exit 1
-        fi
-        py_bin=$opt_bin
     fi
 fi
 if [ ! -e ${py_bin} ]; then
