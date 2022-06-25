@@ -2,7 +2,7 @@
 
 FROM alpine:3.16
 
-ENV PYTHON_VERSIONS="3.8.13 3.9.12 3.10.4"
+ENV PYTHON_VERSIONS="3.8.13 3.9.13 3.10.5 3.11.0b3"
 
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
