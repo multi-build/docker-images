@@ -19,6 +19,8 @@ matrix:
      env: DIST="focal" PLATFORM="s390x"
    - arch: amd64
      env: DIST="alpine3.17" PLATFORM="x86_64"
+   - arch: arm64
+     env: DIST="alpine3.17" PLATFORM="arm64v8"
 
 script:
   - DIST=$DIST PLATFORM=$PLATFORM TRAVIS_COMMIT=$TRAVIS_COMMIT ./build.sh
