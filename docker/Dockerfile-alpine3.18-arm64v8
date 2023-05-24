@@ -1,7 +1,8 @@
 # based on https://github.com/docker-library/python/blob/8d48af512dc58e9c29c9d4ee59477c195a29cbdc/3.10/alpine3.13/Dockerfile
 
-FROM alpine:3.17
+FROM  --platform=linux/arm64/v8 alpine:3.18
 
+ARG PLATFORM=arm64v8
 ENV PYTHON_VERSIONS="3.8.15 3.9.15 3.10.8 3.11.0"
 
 # http://bugs.python.org/issue19846
