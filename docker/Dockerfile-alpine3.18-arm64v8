@@ -3,7 +3,7 @@
 FROM  --platform=linux/arm64/v8 alpine:3.18
 
 ARG PLATFORM=arm64v8
-ENV PYTHON_VERSIONS="3.8.15 3.9.15 3.10.8 3.11.0"
+ENV PYTHON_VERSIONS="3.8.16 3.9.16 3.10.11 3.11.3 3.12.0b1"
 
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
@@ -68,7 +68,6 @@ RUN set -eux; \
             --enable-option-checking=fatal \
             --enable-shared \
             --with-system-expat \
-            --with-system-ffi \
             --without-ensurepip \
          && make -j "$(nproc)" \
             # set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
