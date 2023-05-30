@@ -74,7 +74,8 @@ RUN set -eux; \
             # https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0
                    EXTRA_CFLAGS="-DTHREAD_STACK_SIZE=0x100000" \
                    LDFLAGS="-Wl,--strip-all" \
-         && make install \
+         # reduce verbosity so travis logs do not fill up
+         && make install > /dev/null \
          ) \
        && rm -rf /usr/src/python ; \
     done \
