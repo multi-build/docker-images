@@ -11,7 +11,7 @@ Ubuntu focal (20.04) docker images (64-bit) with Pythons:
 * 3.9
 * 3.10
 * 3.11
-* 3.12b1
+* 3.12
 
 installed via ``apt-get install python2.7-dev`` (etc).
 
